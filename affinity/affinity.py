@@ -23,3 +23,10 @@ class Affinity:
             if ls.name == name:
                 return ls
         return None
+
+    def get_list_by_id(self, list_id: int) -> models.ListId:
+        response = self.session.get(urls.LIST_BY_ID.format(list_id=list_id))
+        if response.ok:
+            return models.ListId(**response.json())
+        else:
+            response.raise_for_status()
