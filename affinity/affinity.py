@@ -50,3 +50,10 @@ class Affinity:
             next_page_token = list_entries.get('next_page_token')
             list_entries = list_entries.get('list_entries')
         return [models.ListEntry(**entry) for entry in list_entries], next_page_token
+
+    def get_list_entry_by_id(self, list_id: int, list_entry_id: int):
+        response = self.session.get(urls.LIST_ENTRY_BY_ID.format(list_id=list_id, list_entry_id=list_entry_id))
+        if response.ok:
+            return models.ListEntry(**response.json())
+        else:
+            response.raise_for_status()
