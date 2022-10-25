@@ -30,3 +30,23 @@ class Affinity:
             return models.ListId(**response.json())
         else:
             response.raise_for_status()
+
+    def get_list_entries(self,
+                         list_id: int,
+                         page_size: int = None,
+                         page_token: str = None) -> (list[models.ListEntry], str | None):
+        query_params = {}
+        if page_size:
+            query_params |= {'page_size': page_size}
+        if page_token:
+            query_params |= {'page_token': page_token}
+        response = self.session.get(urls.LIST_ENTRIES.format(list_id=list_id), params=query_params)
+        if not response.ok:
+            response.raise_for_status()
+
+        list_entries = response.json()
+        next_page_token = None
+        if isinstance(list_entries, dict):
+            next_page_token = list_entries.get('next_page_token')
+            list_entries = list_entries.get('list_entries')
+        return [models.ListEntry(**entry) for entry in list_entries], next_page_token

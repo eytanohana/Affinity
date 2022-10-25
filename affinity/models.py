@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from datetime import datetime
 
 
 class DropdownOption(BaseModel):
@@ -31,4 +32,13 @@ class List(BaseModel):
 class ListId(List):
     fields: list[Field]
 
+
+class ListEntry(BaseModel):
+    id: int
+    list_id: int
+    creator_id: int
+    entity_type: int
+    entity_id: int
+    entity: dict
+    created_at: datetime
 
