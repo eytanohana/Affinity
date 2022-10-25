@@ -16,3 +16,10 @@ class Affinity:
             return [models.List(**ls) for ls in response.json()]
         else:
             response.raise_for_status()
+
+    def get_list_by_name(self, name: str) -> models.List | None:
+        all_lists = self.get_all_lists()
+        for ls in all_lists:
+            if ls.name == name:
+                return ls
+        return None
