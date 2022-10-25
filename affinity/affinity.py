@@ -33,6 +33,7 @@ class Affinity:
 
     def get_list_entries(self,
                          list_id: int,
+                         *,
                          page_size: int = None,
                          page_token: str = None) -> (list[models.ListEntry], str | None):
         query_params = {}
