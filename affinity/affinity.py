@@ -57,3 +57,29 @@ class Affinity:
             return models.ListEntry(**response.json())
         else:
             response.raise_for_status()
+
+    def get_fields(self, *,
+                   list_id: int = None,
+                   value_type: int = None,
+                   entity_type: int = None,
+                   with_modified_names: bool = False,
+                   exclude_dropdown_options: bool = False) -> list[models.Field]:
+        query_params = {}
+        if list_id is not None:
+            query_params |= {'list_id': list_id}
+        if value_type is not None:
+            query_params |= {'value_type': value_type}
+        if entity_type is not None:
+            query_params |= {'entity_type': entity_type}
+        if with_modified_names:
+            query_params |= {'with_modified_names': with_modified_names}
+        if exclude_dropdown_options:
+            query_params |= {'exclude_dropdown_options': exclude_dropdown_options}
+
+        response = self.session.get(urls.FIELDS, params=query_params)
+        if response.ok:
+            return [models.Field(**field) for field in response.json()]
+        else:
+            response.raise_for_status()
+
+
