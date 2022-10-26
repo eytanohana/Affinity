@@ -52,7 +52,7 @@ class Affinity:
             list_entries = list_entries.get('list_entries')
         return [models.ListEntry(**entry) for entry in list_entries], next_page_token
 
-    def get_list_entry_by_id(self, list_id: int, list_entry_id: int):
+    def get_list_entry_by_id(self, list_id: int, list_entry_id: int) -> models.ListEntry:
         response = self.session.get(urls.LIST_ENTRY_BY_ID.format(list_id=list_id, list_entry_id=list_entry_id))
         if response.ok:
             return models.ListEntry(**response.json())
@@ -83,4 +83,25 @@ class Affinity:
         else:
             response.raise_for_status()
 
+    def get_field_values(self, *,
+                         person_id: int = None,
+                         organization_id: int = None,
+                         opportunity_id: int = None,
+                         list_entry_id: int = None
+                         ) -> list[models.FieldValue]:
+        if sum(bool(arg) for arg in (person_id, organization_id, opportunity_id, list_entry_id)) != 1:
+            raise ValueError('Exactly one argument must be specified')
+        if person_id is not None:
+            query_params = {'person_id': person_id}
+        elif organization_id is not None:
+            query_params = {'organization_id': organization_id}
+        elif opportunity_id is not None:
+            query_params = {'opportunity_id': opportunity_id}
+        else:
+            query_params = {'list_entry_id': list_entry_id}
 
+        response = self.session.get(urls.FIELD_VALUES, params=query_params)
+        if response.ok:
+            return [models.FieldValue(**field_val) for field_val in response.json()]
+        else:
+            response.raise_for_status()

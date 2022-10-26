@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
+from typing import Any
 
 
 class DropdownOption(BaseModel):
@@ -18,6 +19,16 @@ class Field(BaseModel):
     value_type: int
     track_changes: bool
     enrichment_source: str
+
+
+class FieldValue(BaseModel):
+    id: int
+    field_id: int
+    entity_id: int
+    entity_type: int
+    list_entry_id: int | None
+    value: Any
+    value_type: int
 
 
 class List(BaseModel):

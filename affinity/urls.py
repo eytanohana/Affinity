@@ -7,3 +7,5 @@ LIST_ENTRIES = LIST_BY_ID + '/list-entries'
 LIST_ENTRY_BY_ID = LIST_ENTRIES + '/{list_entry_id}'
 
 FIELDS = BASE + '/fields'
+
+FIELD_VALUES = BASE + '/field-values'
