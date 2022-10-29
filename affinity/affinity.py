@@ -10,10 +10,17 @@ class Affinity:
     The main object used to interact with the api.
     """
     def __init__(self, api_key):
+        """
+        :param api_key: The api key tied to your account.
+        """
         self._session = Session()
         self._session.auth = HTTPBasicAuth('', api_key)
 
     def get_lists(self) -> list[models.List]:
+        """
+        Get a python list of all Affinity Lists.
+        :return: A list of all Affinity Lists
+        """
         response = self._session.get(urls.LISTS)
         if response.ok:
             return [models.List(**ls) for ls in response.json()]
@@ -21,6 +28,11 @@ class Affinity:
             response.raise_for_status()
 
     def get_list_by_name(self, name: str) -> models.List | None:
+        """
+        Get a List by its name.
+        :param name: The name of a specific List.
+        :return: The specified List
+        """
         all_lists = self.get_lists()
         for ls in all_lists:
             if ls.name == name:
@@ -28,6 +40,11 @@ class Affinity:
         return None
 
     def get_list_by_id(self, list_id: int) -> models.ListId:
+        """
+        Get a List by its ID
+        :param list_id: The List ID
+        :return: The List
+        """
         response = self._session.get(urls.LIST_BY_ID.format(list_id=list_id))
         if response.ok:
             return models.ListId(**response.json())
@@ -39,6 +56,13 @@ class Affinity:
                          *,
                          page_size: int = None,
                          page_token: str = None) -> (list[models.ListEntry], str | None):
+        """
+        Get all list entries for a specific List.
+        :param list_id: The id of the list.
+        :param page_size: The number of returned results
+        :param page_token: A token to fetch the next pages results.
+        :return: a list of Entries, next page token
+        """
         query_params = {}
         if page_size:
             query_params |= {'page_size': page_size}
@@ -56,6 +80,12 @@ class Affinity:
         return [models.ListEntry(**entry) for entry in list_entries], next_page_token
 
     def get_list_entry_by_id(self, list_id: int, list_entry_id: int) -> models.ListEntry:
+        """
+        Get a list entry by its id.
+        :param list_id: The specific list id.
+        :param list_entry_id: The list entry id.
+        :return: The list entry.
+        """
         response = self._session.get(urls.LIST_ENTRY_BY_ID.format(list_id=list_id, list_entry_id=list_entry_id))
         if response.ok:
             return models.ListEntry(**response.json())
@@ -68,6 +98,15 @@ class Affinity:
                    entity_type: int = None,
                    with_modified_names: bool = False,
                    exclude_dropdown_options: bool = False) -> list[models.Field]:
+        """
+        Get a list of fields fitting the parameters filled in.
+        :param list_id: the list id.
+        :param value_type: the value type.
+        :param entity_type: the entity type.
+        :param with_modified_names: return the fields as List[Field Name].
+        :param exclude_dropdown_options: exclude drop down options.
+        :return: A list of fields.
+        """
         query_params = {}
         if list_id is not None:
             query_params |= {'list_id': list_id}
@@ -92,6 +131,14 @@ class Affinity:
                          opportunity_id: int = None,
                          list_entry_id: int = None
                          ) -> list[models.FieldValue]:
+        """
+        Get a list of field values fitting the parameters given.
+        :param person_id:  the person id.
+        :param organization_id: the organization id.
+        :param opportunity_id: the opportunity id.
+        :param list_entry_id: the list entry id.
+        :return: The list of field values.
+        """
         if sum(bool(arg) for arg in (person_id, organization_id, opportunity_id, list_entry_id)) != 1:
             raise ValueError('Exactly one argument must be specified')
         if person_id is not None:
