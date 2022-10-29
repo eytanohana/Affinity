@@ -6,12 +6,15 @@ from affinity import urls
 
 
 class Affinity:
+    """
+    The main object used to interact with the api.
+    """
     def __init__(self, api_key):
-        self.session = Session()
-        self.session.auth = HTTPBasicAuth('', api_key)
+        self._session = Session()
+        self._session.auth = HTTPBasicAuth('', api_key)
 
     def get_lists(self) -> list[models.List]:
-        response = self.session.get(urls.LISTS)
+        response = self._session.get(urls.LISTS)
         if response.ok:
             return [models.List(**ls) for ls in response.json()]
         else:
@@ -25,7 +28,7 @@ class Affinity:
         return None
 
     def get_list_by_id(self, list_id: int) -> models.ListId:
-        response = self.session.get(urls.LIST_BY_ID.format(list_id=list_id))
+        response = self._session.get(urls.LIST_BY_ID.format(list_id=list_id))
         if response.ok:
             return models.ListId(**response.json())
         else:
@@ -41,7 +44,7 @@ class Affinity:
             query_params |= {'page_size': page_size}
         if page_token:
             query_params |= {'page_token': page_token}
-        response = self.session.get(urls.LIST_ENTRIES.format(list_id=list_id), params=query_params)
+        response = self._session.get(urls.LIST_ENTRIES.format(list_id=list_id), params=query_params)
         if not response.ok:
             response.raise_for_status()
 
@@ -53,7 +56,7 @@ class Affinity:
         return [models.ListEntry(**entry) for entry in list_entries], next_page_token
 
     def get_list_entry_by_id(self, list_id: int, list_entry_id: int) -> models.ListEntry:
-        response = self.session.get(urls.LIST_ENTRY_BY_ID.format(list_id=list_id, list_entry_id=list_entry_id))
+        response = self._session.get(urls.LIST_ENTRY_BY_ID.format(list_id=list_id, list_entry_id=list_entry_id))
         if response.ok:
             return models.ListEntry(**response.json())
         else:
@@ -77,7 +80,7 @@ class Affinity:
         if exclude_dropdown_options:
             query_params |= {'exclude_dropdown_options': exclude_dropdown_options}
 
-        response = self.session.get(urls.FIELDS, params=query_params)
+        response = self._session.get(urls.FIELDS, params=query_params)
         if response.ok:
             return [models.Field(**field) for field in response.json()]
         else:
@@ -100,7 +103,7 @@ class Affinity:
         else:
             query_params = {'list_entry_id': list_entry_id}
 
-        response = self.session.get(urls.FIELD_VALUES, params=query_params)
+        response = self._session.get(urls.FIELD_VALUES, params=query_params)
         if response.ok:
             return [models.FieldValue(**field_val) for field_val in response.json()]
         else:
