@@ -155,3 +155,14 @@ class Affinity:
             return [models.FieldValue(**field_val) for field_val in response.json()]
         else:
             response.raise_for_status()
+
+    def get_organizations(self, *,
+                          term: str = None,
+                          with_interaction_dates: bool = False,
+                          with_interation_persons: bool = False,
+                          with_opportunities: bool = False,
+                          page_size: int = None,
+                          page_token: str = None,
+                          **kwargs):
+        response = self._session.get(urls.ORGANIZATIONS)
+        return response.json()

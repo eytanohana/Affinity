@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field as pyField
 from datetime import datetime
 from typing import Any
 
@@ -53,3 +53,16 @@ class ListEntry(BaseModel):
     entity: dict
     created_at: datetime
 
+
+class Organization(BaseModel):
+    id: int
+    name: str
+    domain: str
+    crunchbase_uuid: str
+    domains: list[str]
+    person_ids: list[int] = None
+    opportunity_ids: list[int] = None
+    global_: bool = pyField(alias='global')
+    list_entries: list[ListEntry] = None
+    interaction_dates: Any
+    interactions: Any
