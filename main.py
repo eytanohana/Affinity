@@ -22,8 +22,9 @@ def main():
     # specific_list_fields = af.get_fields(list_id=specific_list.id)
     # field_vals = af.get_field_values(organization_id=list_entry.entity_id)
     # orgs = af.get_organizations()
-    persons, next_token = af.get_persons()
-    print(persons)
+    # persons, next_token = af.get_persons()
+    person = af.get_person_by_id(130752748, with_interaction_persons=True)
+    print(person)
 
     print()
 

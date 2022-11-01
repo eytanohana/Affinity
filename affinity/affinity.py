@@ -175,6 +175,17 @@ class Affinity:
         else:
             response.raise_for_status()
 
+    def get_person_by_id(self, person_id, *,
+                         with_interaction_dates: bool = False,
+                         with_interaction_persons: bool = False,
+                         with_opportunities: bool = False) -> models.Person:
+        query_params = {k: v for k, v in locals().items() if k not in {'self', 'query_params', 'person_id'}}
+        response = self._session.get(urls.PERSON_BY_ID.format(person_id=person_id), params=query_params)
+        if response.ok:
+            return models.Person(**response.json())
+        else:
+            response.raise_for_status()
+
     def get_organizations(self, *,
                           term: str = None,
                           with_interaction_dates: bool = False,

@@ -11,5 +11,6 @@ FIELDS = BASE + '/fields'
 FIELD_VALUES = BASE + '/field-values'
 
 PERSONS = BASE + '/persons'
+PERSON_BY_ID = PERSONS + '/{person_id}'
 
 ORGANIZATIONS = BASE + '/organizations'
