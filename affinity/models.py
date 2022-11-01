@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field as pyField
+from pydantic import BaseModel, Field as pyField, EmailStr
 from datetime import datetime
 from typing import Any
 
@@ -64,5 +64,19 @@ class Organization(BaseModel):
     opportunity_ids: list[int] = None
     global_: bool = pyField(alias='global')
     list_entries: list[ListEntry] = None
+    interaction_dates: Any
+    interactions: Any
+
+
+class Person(BaseModel):
+    id: int
+    type: int
+    first_name: str
+    last_name: str
+    primary_email: EmailStr
+    emails: list[EmailStr]
+    organization_ids: list[int] | None
+    opportunity_ids: list[int] | None
+    list_entries: list[ListEntry] | None
     interaction_dates: Any
     interactions: Any

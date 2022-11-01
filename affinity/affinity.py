@@ -156,6 +156,25 @@ class Affinity:
         else:
             response.raise_for_status()
 
+    def get_persons(self, *,
+                    term: str = None,
+                    with_interaction_dates: bool = False,
+                    with_interation_persons: bool = False,
+                    with_opportunities: bool = False,
+                    page_size: int = None,
+                    page_token: str = None,
+                    **kwargs) -> (list[models.Person], str | None):
+        query_params = {k: v for k, v in locals().items()
+                        if k not in {'self', 'query_params', 'kwargs'} and v is not None}
+        query_params.update(kwargs)
+        response = self._session.get(urls.PERSONS, params=query_params)
+        if response.ok:
+            res = response.json()
+            people, next_page_token = res['persons'], res['next_page_token']
+            return [models.Person(**pers) for pers in people], next_page_token
+        else:
+            response.raise_for_status()
+
     def get_organizations(self, *,
                           term: str = None,
                           with_interaction_dates: bool = False,

@@ -10,4 +10,6 @@ FIELDS = BASE + '/fields'
 
 FIELD_VALUES = BASE + '/field-values'
 
+PERSONS = BASE + '/persons'
+
 ORGANIZATIONS = BASE + '/organizations'

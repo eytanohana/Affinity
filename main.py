@@ -21,7 +21,9 @@ def main():
     # list_entry = af.get_list_entry_by_id(specific_list.id, all_entries[-1].id)
     # specific_list_fields = af.get_fields(list_id=specific_list.id)
     # field_vals = af.get_field_values(organization_id=list_entry.entity_id)
-    orgs = af.get_organizations()
+    # orgs = af.get_organizations()
+    persons, next_token = af.get_persons()
+    print(persons)
 
     print()
 
