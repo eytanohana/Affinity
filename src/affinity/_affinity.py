@@ -1,8 +1,7 @@
 from requests import Session
 from requests.auth import HTTPBasicAuth
 
-from affinity import models
-from affinity import urls
+from . import _models as models, _urls as urls
 
 
 class Affinity:

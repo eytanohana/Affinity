@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "affinity"
-version = "0.0.2"
+version = "0.0.3"
 authors = [
   { name="Eytan Ohana", email="eohana98@gmail.com" },
 ]
