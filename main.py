@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 from pathlib import Path
-from affinity import Affinity
+from src.affinity import Affinity
 
 import os
 
